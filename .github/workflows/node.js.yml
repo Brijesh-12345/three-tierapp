@@ -42,28 +42,31 @@ jobs:
         with:
           node-version: "23"
 
-      - name: Run gitleaks scan
+      - name: Run gitleaks scan on client
         uses: gitleaks/gitleaks-action@v2
         with:
           args: detect --source ./client --exit-code 1
 
       - name: Run gitleaks scan on API
-        run: |
-          gitleaks detect --source ./api --exit-code 1
+        uses: gitleaks/gitleaks-action@v2
+        with:
+          args: detect --source ./api --exit-code 1
+
   trivy_fs_scan:
     runs-on: Agent-1
     needs: gitleaks-scan
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.33.1
         with:
-          scann-type: 'fs'
-          scann-ref: "."
+          scan-type: 'fs'
+          scan-ref: '.'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
-
