@@ -1,0 +1,32 @@
+
+name: Node.js CICD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  compile:
+    runs-on: Agents-1
+
+    
+    steps:
+    - uses: actions/checkout@v4
+    - name: Checkout code.
+      uses: actions/setup-node@v4
+    - name: setup Node.js  
+    - uses: actions/checkout@v4
+      with:
+        node-version: "23"
+    - name: frontend compilation check
+      run: |
+        cd client 
+        sh 'find . -name "*.js" -exec node --check {} +'
+    - name: backend compilation syntax check
+      run: |
+        cd client 
+        sh 'find . -name "*.js" -exec node --check {} +'    
+        
+  
