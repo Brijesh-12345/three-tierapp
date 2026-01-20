@@ -42,15 +42,15 @@ jobs:
         with:
           node-version: "23"
 
-      - name: Run gitleaks scan on client
+      - name: Run gitleaks scan
         uses: gitleaks/gitleaks-action@v2
         with:
           args: detect --source ./client --exit-code 1
 
       - name: Run gitleaks scan on API
-        uses: gitleaks/gitleaks-action@v2
-        with:
-          args: detect --source ./api --exit-code 1
+        run: |
+          gitleaks detect --source ./api --exit-code 1
+
 
   trivy_fs_scan:
     runs-on: Agent-1
